@@ -46,7 +46,7 @@ function manufacturerCreate(name, cb) {
         return
       }
       console.log('New Manufacturer: ' + manufacturer);
-      manufcaturers.push(manufacturer);
+      manufacturers.push(manufacturer);
       cb(null, manufacturer);
     }  );
   }
@@ -128,28 +128,28 @@ function createManufacturers(cb) {
 
 function createItems(cb) {
     async.parallel([
-        function(callback) {
+        function(cb) {
             itemCreate("Player Telecaster Blue", categories[0], manufacturers[0], "Tele tradition updated with contemporary feel.", 849.99, 2, cb);
         },
-        function(callback) {
+        function(cb) {
             itemCreate("K Custom Dark Crash Cymbal 19in", categories[2], manufacturers[1], "Produces warm, rich sound that cuts through and sings out.", 414.99, 5, cb);
         },
-        function(callback) {
+        function(cb) {
             itemCreate("Breakbeats 4-Piece Shell Pack Blue Sparkle", categories[2], manufacturers[2], "Signature shell pack of Roots drummer, Questlove.", 549.99, 6, cb);
         },
-        function(callback) {
+        function(cb) {
             itemCreate("Nylon Max Grip Guitar Picks 12pc", categories[6], manufacturers[3], "A durable nylon pick that features Dunlop's cutting-edge Max Grip technology.", 2.99, 20, cb);
         },
-        function(callback) {
+        function(cb) {
             itemCreate("SM57 Dynamic Instrument Microphone", categories[5], manufacturers[4], "An industry standard for performance and recording.", 89.99, 12, cb);
         },
-        function(callback) {
+        function(cb) {
             itemCreate("Holy Grail Nano Reverb Pedal", categories[4], manufacturers[5], "A true space-saver with classic Holy Grail sounds.", 129.99, 4, cb);
         },
-        function(callback) {
+        function(cb) {
             itemCreate("MS-20 Mini Analog Monophonic Synth", categories[3], manufacturers[6], "History repeats itself, and that's a good thing.", 499.99, 8, cb);
         }
-        ], cb);
+        ]);
 }
 
 async.series([
