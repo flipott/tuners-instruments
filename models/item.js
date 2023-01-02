@@ -6,7 +6,7 @@ const ItemSchema = new Schema({
     category: {type: Schema.Types.ObjectId, ref: "Category", required: true},
     manufacturer: {type: Schema.Types.ObjectId, ref: "Manufacturer", required: true},
     description: {type: String, required: true},
-    price: {type: Number, required: true},
+    price: {type: mongoose.Schema.Types.Decimal128, required: true},
     stock: {type: Number, required: true},
 });
 
