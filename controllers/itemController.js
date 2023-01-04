@@ -65,8 +65,22 @@ exports.index = (req, res) => {
   };
 
 // Display list of all Items.
-exports.item_list = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item list");
+exports.item_list = (req, res, next) => {
+  // Item.find({});
+  async.parallel(
+    {
+      item_info(callback) {
+        Item.find({}, callback).populate("category manufacturer");
+      },
+  },
+  (err, list_items) => {
+    if (err) {
+      return next(err);
+    }
+    console.log(list_items);
+    res.render("item_list", {list_items: list_items.item_info})
+  }
+  )
 };
 
 // Display detail page for a specific Item.
