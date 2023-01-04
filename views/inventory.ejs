@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tuner's Instruments</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Tuner's Instruments</h1>
+    <div class="main">
+        <div class="sidebar">
+            <ul>
+                <li><a href="/inventory/items">View all items</a></li>
+                <li><a href="/inventory/categories">View all categories</a></li>
+                <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+            </ul>
+        </div>
+        <div class="stock">
+            <p>Available stock:</p>
+            <ul>
+                <li>Guitars: <%= stock.guitar %></li>
+                <li>Basses: <%= stock.bass %></li>
+                <li>Percussion: <%= stock.percussion %></li>
+                <li>Keys: <%= stock.keys %></li>
+                <li>Amps/FX: <%= stock.ampsfx %></li>
+                <li>Recording: <%= stock.recording %></li>
+                <li>Accessories: <%= stock.accessories %></li>
+            </ul>
+        </div>
+    </div> 
+  </body>
+</html>
