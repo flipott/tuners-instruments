@@ -78,7 +78,9 @@ exports.item_list = (req, res, next) => {
       return next(err);
     }
     console.log(list_items);
-    res.render("item_list", {list_items: list_items.item_info})
+    let sortedItems = list_items.item_info;
+    sortedItems.sort((a, b) => a.category.name.localeCompare(b.category.name))
+    res.render("item_list", {list_items: sortedItems})
   }
   )
 };
