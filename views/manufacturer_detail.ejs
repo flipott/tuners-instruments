@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tuner's Instruments</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Tuner's Instruments</h1>
+    <div class="main">
+        <div class="sidebar">
+            <ul>
+                <li><a href="/inventory/items">View all items</a></li>
+                <li><a href="/inventory/categories">View all categories</a></li>
+                <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+            </ul>
+        </div>
+        <div class="stock">
+            <p>Available stock:</p>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Manufacturer</th>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                </tr>
+
+                <% list_items.forEach((item) => { %>
+                    <tr>
+                        <td><a href="<%= item.category.url %>"><%= item.category.name %></a></td>
+                        <td><a href="<%= item.manufacturer.url %>"><%= item.manufacturer.name %></a></td>
+                        <td><a href="<%= item.url %>"><%= item.name %></a></td>
+                        <td><%= item.price %></td>
+                        <td><%= item.stock %></td>
+                    </tr>
+                <% }) %>
+
+            </table>
+        </div>
+    </div> 
+  </body>
+</html>
