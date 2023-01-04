@@ -82,7 +82,7 @@ router.get("/manufacturer/:id/update", manufacturer_controller.manufacturer_upda
 router.post("/manufacturer/:id/update", manufacturer_controller.manufacturer_update_post);
 
 // GET request for one Manufacturer.
-router.get("/manufacturer/:id", manufacturer_controller.manufacturer_detail);
+router.get("/manufacturer/:name", manufacturer_controller.manufacturer_detail);
 
 // GET request for list of all Manufacturers.
 router.get("/manufacturers", manufacturer_controller.manufacturer_list);
