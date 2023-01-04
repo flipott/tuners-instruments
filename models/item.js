@@ -15,4 +15,3 @@ ItemSchema.virtual("url").get(function () {
 });
 
 module.exports = mongoose.model("Item", ItemSchema);
-
