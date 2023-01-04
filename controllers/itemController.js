@@ -66,7 +66,6 @@ exports.index = (req, res) => {
 
 // Display list of all Items.
 exports.item_list = (req, res, next) => {
-  // Item.find({});
   async.parallel(
     {
       item_info(callback) {
