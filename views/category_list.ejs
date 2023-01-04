@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tuner's Instruments</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Tuner's Instruments</h1>
+    <div class="main">
+        <div class="sidebar">
+            <ul>
+                <li><a href="/inventory/items">View all items</a></li>
+                <li><a href="/inventory/categories">View all categories</a></li>
+                <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+            </ul>
+        </div>
+        <p>Viewing all categories</p>
+        <div class="stock">
+            <ul>
+                <% list_categories.forEach((item) => { %>
+                    <ul><a href="<%= item.url %>"><%= item.name %></a></ul>
+                <% }) %>
+            </ul>
+            </table>
+        </div>
+    </div> 
+  </body>
+</html>
