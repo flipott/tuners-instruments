@@ -1,8 +1,24 @@
 const Category = require("../models/category");
+const async = require("async");
 
-// Display list of all Categorys.
-exports.category_list = (req, res) => {
-  res.send("NOT IMPLEMENTED: Category list");
+// Display list of all Categories.
+exports.category_list = (req, res, next) => {
+  async.parallel(
+    {
+      category_info(callback) {
+        Category.find({}, callback).populate("name");
+      },
+  },
+  (err, category_list) => {
+    if (err) {
+      return next(err);
+    }
+    let sortedCats = category_list.category_info;
+    sortedCats.sort((a, b) => a.name.localeCompare(b.name))
+    console.log(sortedCats);
+    res.render("category_list", {list_categories: sortedCats})
+  }
+  )
 };
 
 // Display detail page for a specific Category.
