@@ -1,4 +1,5 @@
 const Manufacturer = require("../models/manufacturer");
+const Item = require("../models/item");
 const async = require("async");
 
 // Display list of all Manufacturers.
@@ -21,9 +22,25 @@ exports.manufacturer_list = (req, res, next) => {
   )
 };
 
-// Display detail page for a specific Manufacturer.
-exports.manufacturer_detail = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Manufacturer detail: ${req.params.id}`);
+// List all items for a specific Manufacturer.
+exports.manufacturer_detail = (req, res, next) => {
+  async.parallel(
+    {
+      item_info(callback) {
+        Item.find({}, callback).populate("category manufacturer");
+      },
+  },
+  (err, list_items) => {
+    if (err) {
+      return next(err);
+    }
+    console.log(list_items);
+    let sortedItems = list_items.item_info;
+    sortedItems.sort((a, b) => a.category.name.localeCompare(b.category.name))
+    let filteredItems = sortedItems.filter((item) => item.manufacturer.name.toLowerCase() === req.params.name)
+    res.render("manufacturer_detail", {list_items: filteredItems})
+  }
+  )
 };
 
 // Display Manufacturer create form on GET.
