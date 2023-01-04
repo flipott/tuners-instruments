@@ -6,7 +6,7 @@ const ManufacturerSchema = new Schema({
 });
 
 ManufacturerSchema.virtual("url").get(function () {
-    return `/inventory/${this._id}`;
+    return `/inventory/${this.name.toLowerCase()}`;
 });
 
 module.exports = mongoose.model("Manufacturer", ManufacturerSchema);
