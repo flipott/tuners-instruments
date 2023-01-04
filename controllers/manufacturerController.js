@@ -1,8 +1,24 @@
 const Manufacturer = require("../models/manufacturer");
+const async = require("async");
 
 // Display list of all Manufacturers.
-exports.manufacturer_list = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer list");
+exports.manufacturer_list = (req, res, next) => {
+  async.parallel(
+    {
+      manufacturer_info(callback) {
+        Manufacturer.find({}, callback).populate("name");
+      },
+  },
+  (err, manufacturer_list) => {
+    if (err) {
+      return next(err);
+    }
+    let sortedMans = manufacturer_list.manufacturer_info;
+    sortedMans.sort((a, b) => a.name.localeCompare(b.name))
+    console.log(sortedMans);
+    res.render("manufacturer_list", {list_manufacturers: sortedMans})
+  }
+  )
 };
 
 // Display detail page for a specific Manufacturer.
