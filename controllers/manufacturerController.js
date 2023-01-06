@@ -16,7 +16,6 @@ exports.manufacturer_list = (req, res, next) => {
     }
     let sortedMans = manufacturer_list.manufacturer_info;
     sortedMans.sort((a, b) => a.name.localeCompare(b.name))
-    console.log(sortedMans);
     res.render("manufacturer_list", {list_manufacturers: sortedMans})
   }
   )
@@ -38,7 +37,7 @@ exports.manufacturer_detail = (req, res, next) => {
     let sortedItems = list_items.item_info;
     sortedItems.sort((a, b) => a.category.name.localeCompare(b.category.name))
     let filteredItems = sortedItems.filter((item) => item.manufacturer.name.toLowerCase() === req.params.name)
-    res.render("manufacturer_detail", {list_items: filteredItems})
+    res.render("manufacturer_detail", {list_items: filteredItems, manufacturer: req.params.name})
   }
   )
 };
