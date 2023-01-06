@@ -76,7 +76,6 @@ exports.item_list = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log(list_items);
     let sortedItems = list_items.item_info;
     sortedItems.sort((a, b) => a.category.name.localeCompare(b.category.name))
     res.render("item_list", {list_items: sortedItems})
@@ -86,7 +85,19 @@ exports.item_list = (req, res, next) => {
 
 // Display detail page for a specific Item.
 exports.item_detail = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Item detail: ${req.params.id}`);
+  async.parallel(
+    {
+      item_info(callback) {
+        Item.find({_id: req.params.id}, callback).populate("category manufacturer");
+      },
+  },
+  (err, item_details) => {
+    if (err) {
+      return next(err);
+    }
+    res.render("item_detail", {item_details: item_details.item_info[0]})
+  }
+  )
 };
 
 // Display Item create form on GET.
