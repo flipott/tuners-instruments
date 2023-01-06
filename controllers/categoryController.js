@@ -16,7 +16,6 @@ exports.category_list = (req, res, next) => {
     }
     let sortedCats = category_list.category_info;
     sortedCats.sort((a, b) => a.name.localeCompare(b.name))
-    console.log(sortedCats);
     res.render("category_list", {list_categories: sortedCats})
   }
   )
@@ -34,11 +33,10 @@ exports.category_detail = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log(list_items);
     let sortedItems = list_items.item_info;
     sortedItems.sort((a, b) => a.category.name.localeCompare(b.category.name))
-    let filteredItems = sortedItems.filter((item) => item.category.name.toLowerCase() === req.params.name)
-    res.render("category_detail", {list_items: filteredItems})
+    let filteredItems = sortedItems.filter((item) => item.category.name.toLowerCase() === req.params.name);
+    res.render("category_detail", {list_items: filteredItems, category: req.params.name})
   }
   )
 };
