@@ -1,6 +1,7 @@
 const Manufacturer = require("../models/manufacturer");
 const Item = require("../models/item");
 const async = require("async");
+const {body, validationResult} = require("express-validator");
 
 // Display list of all Manufacturers.
 exports.manufacturer_list = (req, res, next) => {
@@ -33,7 +34,6 @@ exports.manufacturer_detail = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log(list_items);
     let sortedItems = list_items.item_info;
     sortedItems.sort((a, b) => a.category.name.localeCompare(b.category.name))
     let filteredItems = sortedItems.filter((item) => item.manufacturer.name.toLowerCase() === req.params.name)
@@ -44,13 +44,40 @@ exports.manufacturer_detail = (req, res, next) => {
 
 // Display Manufacturer create form on GET.
 exports.manufacturer_create_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer create GET");
+  res.render("manufacturer_form");
 };
 
 // Handle Manufacturer create on POST.
-exports.manufacturer_create_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer create POST");
-};
+exports.manufacturer_create_post = [
+  body("name", "Manufacturer name required").trim().toLowerCase().isLength({ min: 2 }).escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    const manufacturer = new Manufacturer({ name: req.body.name });
+    if (!errors.isEmpty()) {
+      res.render("manufacturer_form", {
+        manufacturer,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      Manufacturer.findOne({lowercase: req.body.name.toLowerCase()}).exec((err, found) => {
+        if (err) {
+          return next(err);
+        }
+        if (found) {
+          res.redirect(found.url);
+        } else {
+          manufacturer.save((err) => {
+            if (err) {
+              return next(err);
+            }
+            res.redirect(manufacturer.url);
+          });
+        }
+      });
+    }
+  }
+];
 
 // Display Manufacturer delete form on GET.
 exports.manufacturer_delete_get = (req, res) => {
