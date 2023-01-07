@@ -9,4 +9,12 @@ ManufacturerSchema.virtual("url").get(function () {
     return `/inventory/manufacturer/${this.name.toLowerCase()}`;
 });
 
+ManufacturerSchema.virtual("url2").get(function () {
+    return `/inventory/manufacturer/${this.name.toLowerCase()}`;
+});
+
+ManufacturerSchema.virtual("lowercase").get(function () {
+    return `${this.name.toLowerCase()}`;
+});
+
 module.exports = mongoose.model("Manufacturer", ManufacturerSchema);
