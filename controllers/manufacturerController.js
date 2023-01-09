@@ -3,6 +3,36 @@ const Item = require("../models/item");
 const async = require("async");
 const {body, validationResult} = require("express-validator");
 
+function formatStr(str) {
+
+  let newStr = str;
+
+  if (newStr.includes(`'`)) {
+    newStr = newStr.replace(`'`, "");
+  }
+
+  if (!newStr.includes(" ") && !newStr.includes("-") && !newStr.includes("/")) {
+    return newStr.charAt(0).toUpperCase() + newStr.slice(1);
+  } else if (newStr.includes(" ")) {
+    const strArr = newStr.split(" ");
+    let emptyArr = [];
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1)));
+    return emptyArr.join(" ");
+  } else if (newStr.includes("-")) {
+    const strArr = newStr.split("-");
+    let emptyArr = [];
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1)));
+    return emptyArr.join("-");
+  } else if (newStr.includes("/")) {
+    const strArr = newStr.split("/");
+    let emptyArr = [];
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1)));
+    return emptyArr.join("/");
+  }
+
+  return str;
+}
+
 // Display list of all Manufacturers.
 exports.manufacturer_list = (req, res, next) => {
   async.parallel(
@@ -49,10 +79,11 @@ exports.manufacturer_create_get = (req, res) => {
 
 // Handle Manufacturer create on POST.
 exports.manufacturer_create_post = [
-  body("name", "Manufacturer name required").trim().toLowerCase().isLength({ min: 2 }).escape(),
+  body("name", "Manufacturer name required").trim().toLowerCase().isLength({ min: 2 }),
   (req, res, next) => {
     const errors = validationResult(req);
-    const manufacturer = new Manufacturer({ name: req.body.name });
+    const formattedName = formatStr(req.body.name);
+    const manufacturer = new Manufacturer({ name: formattedName });
     if (!errors.isEmpty()) {
       res.render("manufacturer_form", {
         manufacturer,
@@ -60,7 +91,7 @@ exports.manufacturer_create_post = [
       });
       return;
     } else {
-      Manufacturer.findOne({lowercase: req.body.name.toLowerCase()}).exec((err, found) => {
+      Manufacturer.findOne({name: formattedName}).exec((err, found) => {
         if (err) {
           return next(err);
         }
