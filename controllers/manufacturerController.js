@@ -111,8 +111,18 @@ exports.manufacturer_create_post = [
 ];
 
 // Display Manufacturer delete form on GET.
-exports.manufacturer_delete_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer delete GET");
+exports.manufacturer_delete_get = (req, res, next) => {
+
+  Manufacturer.find({name: formatStr(req.params.id)}).exec((err, found) => {
+    if (err) {
+      return next(err)
+    }
+    if (found) {
+      Manufacturer.deleteOne(found);
+    }
+  })
+  
+  res.redirect("/inventory");
 };
 
 // Handle Manufacturer delete on POST.
