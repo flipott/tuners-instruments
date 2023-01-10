@@ -69,24 +69,17 @@ router.get("/manufacturer/create", manufacturer_controller.manufacturer_create_g
 // POST request for creating Manufacturer.
 router.post("/manufacturer/create", manufacturer_controller.manufacturer_create_post);
 
-// GET request to delete Manufacturer.
-router.get("/manufacturer/:id/delete", manufacturer_controller.manufacturer_delete_get);
-
-// POST request to delete Manufacturer.
-router.post("/manufacturer/:id/delete", manufacturer_controller.manufacturer_delete_post);
-
 // GET request to update Manufacturer.
-router.get("/manufacturer/:id/update", manufacturer_controller.manufacturer_update_get);
+router.get("/manufacturer/:name/update", manufacturer_controller.manufacturer_update_get);
 
 // POST request to update Manufacturer.
-router.post("/manufacturer/:id/update", manufacturer_controller.manufacturer_update_post);
+router.post("/manufacturer/:name/update", manufacturer_controller.manufacturer_update_post);
 
 // GET request for one Manufacturer.
 router.get("/manufacturer/:name", manufacturer_controller.manufacturer_detail);
 
 // POST request for one Manufacturer.
 router.post("/manufacturer/:name", manufacturer_controller.manufacturer_detail_post);
-
 
 // GET request for list of all Manufacturers.
 router.get("/manufacturers", manufacturer_controller.manufacturer_list);
