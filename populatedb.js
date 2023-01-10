@@ -89,7 +89,7 @@ function createCategories(cb) {
             categoryCreate('Keys', cb);
         },
         function(cb) {
-            categoryCreate('Amps/FX', cb);
+            categoryCreate('Amps-FX', cb);
         },
         function(cb) {
             categoryCreate('Recording', cb);
