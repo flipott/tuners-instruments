@@ -72,6 +72,15 @@ exports.manufacturer_detail = (req, res, next) => {
   )
 };
 
+exports.manufacturer_detail_post = (req, res, next) => {
+  Manufacturer.findOneAndDelete({name: formatStr(req.params.name)}, (err, deleted) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/inventory");
+  });
+}
+
 // Display Manufacturer create form on GET.
 exports.manufacturer_create_get = (req, res) => {
   res.render("manufacturer_form");
@@ -113,16 +122,6 @@ exports.manufacturer_create_post = [
 // Display Manufacturer delete form on GET.
 exports.manufacturer_delete_get = (req, res, next) => {
 
-  Manufacturer.find({name: formatStr(req.params.id)}).exec((err, found) => {
-    if (err) {
-      return next(err)
-    }
-    if (found) {
-      Manufacturer.deleteOne(found);
-    }
-  })
-  
-  res.redirect("/inventory");
 };
 
 // Handle Manufacturer delete on POST.
