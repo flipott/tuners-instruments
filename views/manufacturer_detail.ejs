@@ -17,6 +17,7 @@
         <div class="stock">
             <% if (list_items.length) { %>
                 <p>Viewing all <%= manufacturer %> items</p>
+                <p><a href="<%= manufacturer %>/update">Update manufacturer name</a></p>
                 <table>
                     <tr>
                         <th>Category</th>
@@ -37,6 +38,7 @@
                     <% }) %>
             <% } else { %>
                 <p>There are no items from <%= manufacturer %>.</p>
+                <p><a href="<%= manufacturer %>/update">Update manufacturer name</a></p>
                 <form method="POST" action="">
                     <button name="delete">Delete Manufacturer</button>
                 </form>
