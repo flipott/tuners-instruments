@@ -37,8 +37,10 @@
                     <% }) %>
             <% } else { %>
                 <p>There are no items from <%= manufacturer %>.</p>
-                <a href="/inventory/manufacturer/<%= manufacturer %>/delete">Delete Manufacturer</a>
-            <% } %>
+                <form method="POST" action="">
+                    <button name="delete">Delete Manufacturer</button>
+                </form>
+                <% } %>
 
             </table>
         </div>
