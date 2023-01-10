@@ -8,29 +8,29 @@ exports.index = (req, res) => {
     async.parallel(
       {
          guitar_count(callback) {
-          Item.find({category: '63b34d3766a73e71c8cf1c68'}, callback);
+          Item.find({category: '63bde0a21d6c87cc4329975f'}, callback);
         },
         bass_count(callback) {
-          Item.find({category: '63b34d3766a73e71c8cf1c6b'}, callback);
+          Item.find({category: '63bde0a31d6c87cc43299762'}, callback);
         },
         percussion_count(callback) {
-          Item.find({category: '63b34d3866a73e71c8cf1c6d'}, callback);
+          Item.find({category: '63bde0a31d6c87cc43299764'}, callback);
         },
         keys_count(callback) {
-          Item.find({category: '63b34d3866a73e71c8cf1c6f'}, callback);
+          Item.find({category: '63bde0a31d6c87cc43299766'}, callback);
         },
         ampsfx_count(callback) {
-          Item.find({category: '63b34d3866a73e71c8cf1c71'}, callback);
+          Item.find({category: '63bde0a31d6c87cc43299768'}, callback);
         },
         recording_count(callback) {
-          Item.find({category: '63b34d3866a73e71c8cf1c73'}, callback);
+          Item.find({category: '63bde0a31d6c87cc4329976a'}, callback);
         },
         accessories_count(callback) {
-          Item.find({category: '63b34d3866a73e71c8cf1c75'}, callback);
+          Item.find({category: '63bde0a31d6c87cc4329976c'}, callback);
         },
       },
       (err, results) => {
-        let guitar_count = 0;
+       let guitar_count = 0;
         results.guitar_count.forEach((obj) => guitar_count += obj.stock);
 
         let bass_count = 0;
@@ -58,7 +58,6 @@ exports.index = (req, res) => {
                           ampsfx: ampsfx_count,
                           recording: recording_count,
                           accessories: accessories_count}
-                          
         res.render("inventory", {stock: stockObj});
       }
     )
