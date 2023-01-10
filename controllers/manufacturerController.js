@@ -12,21 +12,21 @@ function formatStr(str) {
   }
 
   if (!newStr.includes(" ") && !newStr.includes("-") && !newStr.includes("/")) {
-    return newStr.charAt(0).toUpperCase() + newStr.slice(1);
+    return newStr.charAt(0).toUpperCase() + newStr.slice(1).toLowerCase();
   } else if (newStr.includes(" ")) {
     const strArr = newStr.split(" ");
     let emptyArr = [];
-    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1)));
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()));
     return emptyArr.join(" ");
   } else if (newStr.includes("-")) {
     const strArr = newStr.split("-");
     let emptyArr = [];
-    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1)));
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()));
     return emptyArr.join("-");
   } else if (newStr.includes("/")) {
     const strArr = newStr.split("/");
     let emptyArr = [];
-    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1)));
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()));
     return emptyArr.join("/");
   }
 
@@ -72,6 +72,7 @@ exports.manufacturer_detail = (req, res, next) => {
   )
 };
 
+// Delete Manufacturer on POST.
 exports.manufacturer_detail_post = (req, res, next) => {
   Manufacturer.findOneAndDelete({name: formatStr(req.params.name)}, (err, deleted) => {
     if (err) {
@@ -119,22 +120,21 @@ exports.manufacturer_create_post = [
   }
 ];
 
-// Display Manufacturer delete form on GET.
-exports.manufacturer_delete_get = (req, res, next) => {
-
-};
-
-// Handle Manufacturer delete on POST.
-exports.manufacturer_delete_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer delete POST");
-};
-
 // Display Manufacturer update form on GET.
 exports.manufacturer_update_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer update GET");
+  console.log(req);
+  res.render("manufacturer_update", {manufacturer: req.params.name});
 };
 
 // Handle Manufacturer update on POST.
 exports.manufacturer_update_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Manufacturer update POST");
+  Manufacturer.updateMany({name: formatStr(req.params.name)}, {name: formatStr(req.body.name)}, (err, updated) => {
+    if (err) {
+      return next(err);
+    }
+    if (updated) {
+      console.log("UPDATED")
+    }
+    res.redirect('/inventory/manufacturers');
+  });
 };
