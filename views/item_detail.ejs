@@ -16,6 +16,8 @@
         </div>
         <div class="stock">
             <h3><%= item_details.name %></h3>
+            <p><a href="<%= item_details.url %>/update">Update item details</a></p>
+            <p><a href="<%= item_details.url %>/delete">Delete Item</a></p>
             <p><a href="<%= item_details.manufacturer.url %>"><%= item_details.manufacturer.name %></a></p>
             <p><a href="<%= item_details.category.url %>"><%= item_details.category.name %></a></p>
             <p><%= item_details.description %></p>
