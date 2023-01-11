@@ -122,7 +122,6 @@ exports.manufacturer_create_post = [
 
 // Display Manufacturer update form on GET.
 exports.manufacturer_update_get = (req, res) => {
-  console.log(req);
   res.render("manufacturer_update", {manufacturer: req.params.name});
 };
 
