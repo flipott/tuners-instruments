@@ -177,14 +177,31 @@ exports.item_create_post = (req, res, next) => {
 };
 
 // Display Item delete form on GET.
-exports.item_delete_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item delete GET");
+exports.item_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      item(callback) {
+        Item.findOne({_id: req.params.id}, callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      res.render("item_delete", {name: results.item.name});
+    }
+  );
 };
 
 // Handle Item delete on POST.
-exports.item_delete_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item delete POST");
-};
+exports.item_delete_post = (req, res, next) => {
+  Item.findOneAndDelete({_id: req.params.id}, (err, deleted) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/inventory/items");
+  });
+}
 
 // Display Item update form on GET.
 exports.item_update_get = (req, res, next) => {
