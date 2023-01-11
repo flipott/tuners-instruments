@@ -139,40 +139,40 @@ exports.item_create_post = (req, res, next) => {
         return next(err);
       }
 
-      console.log(results.items);
-
-
+      let itemExists = [false, ""];
 
       results.items.forEach((item) => {
         if (item.name.toLowerCase() === req.body.name.toLowerCase()
             && JSON.stringify(item.category._id) === JSON.stringify(results.category[0]._id)
             && JSON.stringify(item.manufacturer._id) === JSON.stringify(results.manufacturer[0]._id)) {
-          console.log("It is the same.");
-          // return res.render(item.url);
+            itemExists = [true, item.url];
         }
       })
 
-      let itemdetail = {
-        name: req.body.name,
-        category: results.category[0]._id,
-        manufacturer: results.manufacturer[0]._id,
-        description: req.body.description,
-        price: req.body.price,
-        stock: req.body.stock
-      }
-
-      let item = new Item(itemdetail);
-    
-      item.save(function (err, callback) {
-        if (err) {
-          return next(err);
+      if (itemExists[0]) {
+        res.redirect(itemExists[1]);
+      } else {
+        let itemdetail = {
+          name: req.body.name,
+          category: results.category[0]._id,
+          manufacturer: results.manufacturer[0]._id,
+          description: req.body.description,
+          price: req.body.price,
+          stock: req.body.stock
         }
-        res.render('index');
-      });
+  
+        let item = new Item(itemdetail);
+      
+        item.save(function (err, callback) {
+          if (err) {
+            return next(err);
+          }
+          console.log(callback);
+          res.redirect(item.url);
+        });
+      }
     }
   )
-
-
 };
 
 // Display Item delete form on GET.
