@@ -1,7 +1,10 @@
 const Item = require("../models/item");
+const Manufacturer = require("../models/manufacturer");
 const Category = require("../models/category")
 const async = require("async");
 const {  Schema } = require("mongoose");
+const category = require("../models/category");
+const manufacturer = require("../models/manufacturer");
 
 // Main inventory page
 exports.index = (req, res) => {
@@ -101,12 +104,75 @@ exports.item_detail = (req, res) => {
 
 // Display Item create form on GET.
 exports.item_create_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item create GET");
+  async.parallel(
+    {
+       categories(callback) {
+        Category.find({}, callback);
+      },
+       manufacturers(callback) {
+        Manufacturer.find({}, callback);
+      },
+    },
+    (err, results) => {
+
+      res.render("item_create", {manufacturers: results.manufacturers, categories: results.categories});
+    }
+  )
 };
 
 // Handle Item create on POST.
-exports.item_create_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item create POST");
+exports.item_create_post = (req, res, next) => {
+  async.parallel(
+    {
+      items(callback) {
+        Item.find({}, callback);
+      },
+      category(callback) {
+        Category.find({name: req.body.category}, callback);
+      },
+      manufacturer(callback) {
+        Manufacturer.find({name: req.body.manufacturer}, callback);
+      },
+    }, (err, results) => {
+
+      if (err) {
+        return next(err);
+      }
+
+      console.log(results.items);
+
+
+
+      results.items.forEach((item) => {
+        if (item.name.toLowerCase() === req.body.name.toLowerCase()
+            && JSON.stringify(item.category._id) === JSON.stringify(results.category[0]._id)
+            && JSON.stringify(item.manufacturer._id) === JSON.stringify(results.manufacturer[0]._id)) {
+          console.log("It is the same.");
+          // return res.render(item.url);
+        }
+      })
+
+      let itemdetail = {
+        name: req.body.name,
+        category: results.category[0]._id,
+        manufacturer: results.manufacturer[0]._id,
+        description: req.body.description,
+        price: req.body.price,
+        stock: req.body.stock
+      }
+
+      let item = new Item(itemdetail);
+    
+      item.save(function (err, callback) {
+        if (err) {
+          return next(err);
+        }
+        res.render('index');
+      });
+    }
+  )
+
+
 };
 
 // Display Item delete form on GET.
