@@ -5,6 +5,7 @@ const async = require("async");
 const {  Schema } = require("mongoose");
 const category = require("../models/category");
 const manufacturer = require("../models/manufacturer");
+const { render } = require("ejs");
 
 // Main inventory page
 exports.index = (req, res) => {
@@ -86,7 +87,7 @@ exports.item_list = (req, res, next) => {
 };
 
 // Display detail page for a specific Item.
-exports.item_detail = (req, res) => {
+exports.item_detail = (req, res, next) => {
   async.parallel(
     {
       item_info(callback) {
@@ -186,11 +187,57 @@ exports.item_delete_post = (req, res) => {
 };
 
 // Display Item update form on GET.
-exports.item_update_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item update GET");
+exports.item_update_get = (req, res, next) => {
+  async.parallel(
+    {
+       categories(callback) {
+        Category.find({}, callback);
+      },
+       manufacturers(callback) {
+        Manufacturer.find({}, callback);
+      },
+       previousItem(callback) {
+        Item.findOne({_id: req.params.id}, callback).populate("category manufacturer");
+       }
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      res.render("item_update", {previousItem: results.previousItem, categories: results.categories, manufacturers: results.manufacturers});
+    }
+  )
 };
 
 // Handle Item update on POST.
-exports.item_update_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item update POST");
-};
+exports.item_update_post = (req, res, next) => {
+ async.parallel(
+  {
+    category(callback) {
+      Category.find({name: req.body.category}, callback);
+    },
+    manufacturer(callback) {
+      Manufacturer.find({name: req.body.manufacturer}, callback);
+    },
+  },
+  (err, results) => {
+    if (err) {
+      return next(err);
+    }
+    console.log(req.body.name);
+    Item.findOneAndUpdate({_id: req.params.id}, {
+      name: req.body.name,
+      category: results.category[0]._id,
+      manufacturer: results.manufacturer[0]._id,
+      description: req.body.description,
+      price: req.body.price,
+      stock: req.body.stock
+     }, (err, result) => {
+      if (err) {
+        return next(err);
+      };
+      res.redirect(`/inventory/items/${req.params.id}`);
+     });
+  }
+ );
+}
