@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tuner's Instruments</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Tuner's Instruments</h1>
+    <div class="main">
+        <div class="sidebar">
+            <ul>
+                <li><a href="/inventory/items">View all items</a></li>
+                <li><a href="/inventory/categories">View all categories</a></li>
+                <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+            </ul>
+        </div>
+        <h2>Add Item</h2>
+        <form method="POST" action="">
+          <label for="manufacturer">Manufacturer</label>
+          <select name="manufacturer" required>
+                <option value="" hidden>Select...</option>
+            <% manufacturers.forEach(function(manufacturer) { %>
+                <option><%= manufacturer.name %></option>
+            <% }) %>
+          </select>
+
+          <label for="category">Category</label>
+          <select name="category" required>
+            <option value="" hidden>Select...</option>
+            <% categories.forEach(function(category) { %>
+                <option><%= category.name %></option>
+            <% }) %>
+          </select>
+
+          <label for="name" required>Item Name</label>
+          <input type="text" name="name" required />
+
+          <label for="description">Item Description</label>
+          <textarea name="description" required></textarea>
+
+          <label for="price">Price</label>
+          <input name="price" type="number" min="0.01" step="0.01" required />
+
+          <label for="stock">Stock</label>
+          <input name="stock" type="number" min="1" required />
+
+          <button type="submit">Add Item</button>
+        </form>
+    </div> 
+  </body>
+</html>
