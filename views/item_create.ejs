@@ -4,6 +4,17 @@
     <title>Tuner's Instruments</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
+  <script defer>
+    function addMan(status) {
+      const input = document.getElementById("new-man");
+      if (status) {
+        input.style.display = "inline";
+      } else {
+        input.style.display = "none";
+        input.value = "";
+      }
+    }
+  </script>
   <body>
     <h1>Tuner's Instruments</h1>
     <div class="main">
@@ -18,11 +29,13 @@
         <form method="POST" action="">
           <label for="manufacturer">Manufacturer</label>
           <select name="manufacturer" required>
-                <option value="" hidden>Select...</option>
+            <option value="" hidden>Select...</option>
             <% manufacturers.forEach(function(manufacturer) { %>
-                <option><%= manufacturer.name %></option>
+                <option onClick="addMan(false)"><%= manufacturer.name %></option>
             <% }) %>
+            <option onClick="addMan(true)" value="">Add new...</option>
           </select>
+          <input type="text" name="manufacturer" id="new-man" style="display: none" />
 
           <label for="category">Category</label>
           <select name="category" required>
