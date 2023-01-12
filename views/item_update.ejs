@@ -3,6 +3,25 @@
   <head>
     <title>Tuner's Instruments</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script defer>
+      function addMan(status) {
+  
+        const input = document.getElementById("new-man");
+        const area = document.getElementsByClassName("add-area");
+        if (status) {
+          for (let obj of area) {
+            obj.style.display = "inline"
+          }
+          input.setAttribute("required", "true");
+        } else {
+            for (let obj of area) {
+              obj.style.display = "none";
+            }
+            input.value = "";
+            input.removeAttribute("required");
+          }
+        }
+    </script>
   </head>
   <body>
     <h1>Tuner's Instruments</h1>
@@ -19,10 +38,13 @@
           <label for="manufacturer">Manufacturer</label>
           <select name="manufacturer" required>
             <option hidden selected><%= previousItem.manufacturer.name %></option>
+            <option onClick="addMan(true)" value="">Add new...</option>
             <% manufacturers.forEach(function(manufacturer) { %>
-                <option><%= manufacturer.name %></option>
+                <option onClick="addMan(false)"><%= manufacturer.name %></option>
             <% }) %>
           </select>
+
+          <input type="text" name="manufacturer" class="add-area" id="new-man" style="display: none" />
 
           <label for="category">Category</label>
           <select name="category" required>
