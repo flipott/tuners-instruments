@@ -126,14 +126,17 @@ exports.manufacturer_update_get = (req, res) => {
 };
 
 // Handle Manufacturer update on POST.
-exports.manufacturer_update_post = (req, res) => {
-  Manufacturer.updateMany({name: formatStr(req.params.name)}, {name: formatStr(req.body.name)}, (err, updated) => {
+exports.manufacturer_update_post = (req, res, next) => {
+  Manufacturer.findOne({name: formatStr(req.body.name)}).exec((err, found) => {
     if (err) {
       return next(err);
     }
-    if (updated) {
-      console.log("UPDATED")
+    if (found) {
+      res.redirect(found.url);
+    } else {
+      Manufacturer.updateMany({name: formatStr(req.params.name)}, {name: formatStr(req.body.name)}).exec((err, found) => {
+      res.redirect(`/inventory/manufacturers`)
+      })
     }
-    res.redirect('/inventory/manufacturers');
-  });
-};
+  })
+}
