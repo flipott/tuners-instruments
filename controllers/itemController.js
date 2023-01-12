@@ -7,6 +7,35 @@ const category = require("../models/category");
 const manufacturer = require("../models/manufacturer");
 const { render } = require("ejs");
 
+function formatStr(str) {
+
+  let newStr = str;
+
+  if (newStr.includes(`'`)) {
+    newStr = newStr.replace(`'`, "");
+  }
+
+  if (!newStr.includes(" ") && !newStr.includes("-") && !newStr.includes("/")) {
+    return newStr.charAt(0).toUpperCase() + newStr.slice(1).toLowerCase();
+  } else if (newStr.includes(" ")) {
+    const strArr = newStr.split(" ");
+    let emptyArr = [];
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()));
+    return emptyArr.join(" ");
+  } else if (newStr.includes("-")) {
+    const strArr = newStr.split("-");
+    let emptyArr = [];
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()));
+    return emptyArr.join("-");
+  } else if (newStr.includes("/")) {
+    const strArr = newStr.split("/");
+    let emptyArr = [];
+    strArr.forEach((item) => emptyArr.push(item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()));
+    return emptyArr.join("/");
+  }
+
+  return str;
+}
 // Main inventory page
 exports.index = (req, res) => {
     async.parallel(
@@ -95,6 +124,7 @@ exports.item_detail = (req, res, next) => {
       },
   },
   (err, item_details) => {
+    console.log(item_details);
     if (err) {
       return next(err);
     }
@@ -108,10 +138,10 @@ exports.item_create_get = (req, res) => {
   async.parallel(
     {
        categories(callback) {
-        Category.find({}, callback);
+        Category.find({}, callback).sort({name: 1});
       },
        manufacturers(callback) {
-        Manufacturer.find({}, callback);
+        Manufacturer.find({}, callback).sort({name: 1});
       },
     },
     (err, results) => {
@@ -123,7 +153,37 @@ exports.item_create_get = (req, res) => {
 
 // Handle Item create on POST.
 exports.item_create_post = (req, res, next) => {
-  async.parallel(
+
+// Check for new Manufacturer
+  let formManufacturer = ""
+  let formResultsId = null;
+
+  if (req.body.manufacturer[1]) {
+    const formattedName = formatStr(req.body.manufacturer[1]);
+    const manufacturer = new Manufacturer({ name: formattedName });
+
+    Manufacturer.findOne({name: formattedName}).exec((err, found) => {
+      if (err) {
+        return next(err);
+      }
+      if (found) {
+        formManufacturer = found.name;
+        formResultsId = found._id;
+      } else {
+        manufacturer.save((err, results) => {
+          if (err) {
+            return next(err);
+          }
+          formResultsId = results._id;
+          formManufacturer = formattedName;
+        })
+      }
+    })
+  } else {
+    formManufacturer = req.body.manufacturer[0];
+  }
+
+  async.series(
     {
       items(callback) {
         Item.find({}, callback);
@@ -132,7 +192,8 @@ exports.item_create_post = (req, res, next) => {
         Category.find({name: req.body.category}, callback);
       },
       manufacturer(callback) {
-        Manufacturer.find({name: req.body.manufacturer}, callback);
+        req.body.manufacturer[0] && Manufacturer.find({name: formManufacturer}, callback);
+        req.body.manufacturer[1] && Manufacturer.findOne({}, callback);
       },
     }, (err, results) => {
 
@@ -140,12 +201,14 @@ exports.item_create_post = (req, res, next) => {
         return next(err);
       }
 
+      let manuRef = null;
       let itemExists = [false, ""];
+      req.body.manufacturer[0] ? manuRef = results.manufacturer[0]._id : manuRef = formResultsId;
 
       results.items.forEach((item) => {
         if (item.name.toLowerCase() === req.body.name.toLowerCase()
             && JSON.stringify(item.category._id) === JSON.stringify(results.category[0]._id)
-            && JSON.stringify(item.manufacturer._id) === JSON.stringify(results.manufacturer[0]._id)) {
+            && JSON.stringify(item.manufacturer._id) === JSON.stringify(manuRef)) {
             itemExists = [true, item.url];
         }
       })
@@ -156,7 +219,7 @@ exports.item_create_post = (req, res, next) => {
         let itemdetail = {
           name: req.body.name,
           category: results.category[0]._id,
-          manufacturer: results.manufacturer[0]._id,
+          manufacturer: manuRef,
           description: req.body.description,
           price: req.body.price,
           stock: req.body.stock
@@ -208,10 +271,10 @@ exports.item_update_get = (req, res, next) => {
   async.parallel(
     {
        categories(callback) {
-        Category.find({}, callback);
+        Category.find({}, callback).sort({name: 1});
       },
        manufacturers(callback) {
-        Manufacturer.find({}, callback);
+        Manufacturer.find({}, callback).sort({name: 1});
       },
        previousItem(callback) {
         Item.findOne({_id: req.params.id}, callback).populate("category manufacturer");
@@ -258,3 +321,85 @@ exports.item_update_post = (req, res, next) => {
   }
  );
 }
+
+exports.item_update_post = (req, res, next) => {
+
+  // Check for new Manufacturer
+    let formManufacturer = ""
+    let formResultsId = null;
+  
+    if (req.body.manufacturer[1]) {
+      const formattedName = formatStr(req.body.manufacturer[1]);
+      const manufacturer = new Manufacturer({ name: formattedName });
+  
+      Manufacturer.findOne({name: formattedName}).exec((err, found) => {
+        if (err) {
+          return next(err);
+        }
+        if (found) {
+          formManufacturer = found.name;
+          formResultsId = found._id;
+        } else {
+          manufacturer.save((err, results) => {
+            if (err) {
+              return next(err);
+            }
+            formResultsId = results._id;
+            formManufacturer = formattedName;
+          })
+        }
+      })
+    } else {
+      formManufacturer = req.body.manufacturer[0];
+    }
+  
+    async.series(
+      {
+        items(callback) {
+          Item.find({}, callback);
+        },
+        category(callback) {
+          Category.find({name: req.body.category}, callback);
+        },
+        manufacturer(callback) {
+          req.body.manufacturer[0] && Manufacturer.find({name: formManufacturer}, callback);
+          req.body.manufacturer[1] && Manufacturer.findOne({}, callback);
+        },
+      }, (err, results) => {
+  
+        if (err) {
+          return next(err);
+        }
+  
+        let manuRef = null;
+        let itemExists = [false, ""];
+        req.body.manufacturer[0] ? manuRef = results.manufacturer[0]._id : manuRef = formResultsId;
+  
+        results.items.forEach((item) => {
+          if (item.name.toLowerCase() === req.body.name.toLowerCase()
+              && JSON.stringify(item.category._id) === JSON.stringify(results.category[0]._id)
+              && JSON.stringify(item.manufacturer._id) === JSON.stringify(manuRef)) {
+              itemExists = [true, item.url];
+          }
+        })
+  
+        if (itemExists[0]) {
+          res.redirect(itemExists[1]);
+        } else {
+          Item.findOneAndUpdate({_id: req.params.id}, {
+            name: req.body.name,
+            category: results.category[0]._id,
+            manufacturer: manuRef,
+            description: req.body.description,
+            price: req.body.price,
+            stock: req.body.stock
+           }, (err, result) => {
+            if (err) {
+              return next(err);
+            };
+            res.redirect(`/inventory/items/${req.params.id}`);
+           });
+        }
+      }
+    )
+  };
