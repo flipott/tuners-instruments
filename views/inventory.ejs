@@ -5,27 +5,43 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1>Tuner's Instruments</h1>
+    <header><a href="/inventory"><img src="/images/logo.svg" id="logo"/></a></header>
     <div class="main">
-        <div class="sidebar">
-            <ul>
-                <li><a href="/inventory/items">View all items</a></li>
-                <li><a href="/inventory/categories">View all categories</a></li>
-                <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+      <div class="sidebar">
+          <ul>
+              <li><a href="/inventory/items">View all items</a></li>
+              <li><a href="/inventory/categories">View all categories</a></li>
+              <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+              <br>
+              <br>
+              <li><a href="/inventory/items/create">Add item</a></li>
+              <li><a href="/inventory/manufacturer/create">Add manufacturer</a></li>
             </ul>
-        </div>
-        <div class="stock">
-            <p>Available stock:</p>
-            <ul>
-                <li>Guitars: <%= stock.guitar %></li>
-                <li>Basses: <%= stock.bass %></li>
-                <li>Percussion: <%= stock.percussion %></li>
-                <li>Keys: <%= stock.keys %></li>
-                <li>Amps/FX: <%= stock.ampsfx %></li>
-                <li>Recording: <%= stock.recording %></li>
-                <li>Accessories: <%= stock.accessories %></li>
-            </ul>
-        </div>
-    </div> 
+      </div>
+      <div class="main-content">
+          <h2>Current Available Stock</h2>
+          <div class="stock-container">
+            <div class="stock-info">
+              <p>Guitars:</p>
+              <p>Basses:</p>
+              <p>Percussion:</p>
+              <p>Keys:</p>
+              <p>Amps-FX:</p>
+              <p>Recording:</p>
+              <p>Accessories:</p>
+            </div>
+            <div class="stock-info">
+              <p><%= stock.guitar %></p>
+              <p><%= stock.bass %></p>
+              <p><%= stock.percussion %></p>
+              <p><%= stock.keys %></p>
+              <p><%= stock.ampsfx %></p>
+              <p><%= stock.recording %></p>
+              <p><%= stock.accessories %></p>
+            </div>
+          </div>
+      </div>
+    </div>
+    <footer>Copyright © 2023 Phillip Ott</footer>
   </body>
 </html>
