@@ -5,24 +5,28 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1>Tuner's Instruments</h1>
+    <header><a href="/inventory"><img src="/images/logo.svg" id="logo"/></a></header>
     <div class="main">
-        <div class="sidebar">
-            <ul>
-                <li><a href="/inventory/items">View all items</a></li>
-                <li><a href="/inventory/categories">View all categories</a></li>
-                <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+      <div class="sidebar">
+          <ul>
+              <li><a href="/inventory/items">View all items</a></li>
+              <li><a href="/inventory/categories">View all categories</a></li>
+              <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
+              <br>
+              <br>
+              <li><a href="/inventory/items/create">Add item</a></li>
+              <li><a href="/inventory/manufacturer/create">Add manufacturer</a></li>
             </ul>
-        </div>
-        <p>Viewing all manufacturers</p>
-        <div class="stock">
-            <ul>
-                <% list_manufacturers.forEach((item) => { %>
-                    <ul><a href="<%= item.url %>"><%= item.name %></a></ul>
-                <% }) %>
-            </ul>
-            </table>
-        </div>
-    </div> 
+      </div>
+      <div class="main-content">
+          <h2>Viewing All Manufacturers</h2>
+          <ul class="link-list">
+            <% list_manufacturers.forEach((item) => { %>
+                <li><a href="<%= item.url %>"><%= item.name %></a></li>
+            <% }) %>
+        </ul>
+      </div>
+    </div>
+    <footer>Copyright © 2023 Phillip Ott</footer>
   </body>
 </html>
