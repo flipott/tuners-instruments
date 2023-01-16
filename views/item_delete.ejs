@@ -4,20 +4,28 @@
     <title>Tuner's Instruments</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <body>
-    <h1>Tuner's Instruments</h1>
+  <body>    
+    <header><a href="/inventory"><img src="/images/logo.svg" id="logo"/></a></header>
     <div class="main">
         <div class="sidebar">
             <ul>
                 <li><a href="/inventory/items">View all items</a></li>
                 <li><a href="/inventory/categories">View all categories</a></li>
                 <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
-            </ul>
+                <br>
+                <br>
+                <li><a href="/inventory/items/create">Add item</a></li>
+                <li><a href="/inventory/manufacturer/create">Add manufacturer</a></li>
+              </ul>
         </div>
-        <p>Please confirm deletion of <strong><%= name %></strong>.</p>
-        <form method="POST" action="">
-            <button type="submit">Delete item</button>
-        </form>  
-    </div> 
+        <div class="main-content">
+          <h2>Delete Item</h2>
+          <p>Please confirm deletion of <strong><%= name %></strong>.</p>
+          <form class="delete-form" method="POST" action="">
+              <button class="delete" id="delete-page" type="submit">Delete</button>
+          </form>    
+        </div>
+    </div>
+    <footer>Copyright © 2023 Phillip Ott</footer>
   </body>
 </html>

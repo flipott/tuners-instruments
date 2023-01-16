@@ -19,28 +19,37 @@
               </ul>
         </div>
         <div class="main-content">
-            <div class="stock">
-                <h2>Viewing All <span class="view-title"><%= manufacturer %></span> Items</h2>
-                <table class="item-table">
-                    <tr>
-                        <th>Category</th>
-                        <th>Manufacturer</th>
-                        <th>Item</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                    </tr>
-
-                    <% list_items.forEach((item) => { %>
+            <h2>Viewing All <span class="view-title"><%= manufacturer %></span> Items</h2>
+            <% if (list_items.length) { %>
+                <div class="stock">
+                    <p><a href="<%= manufacturer %>/update">Update manufacturer name</a></p>
+                    <table class="item-table">
                         <tr>
-                            <td><a href="<%= item.category.url %>"><%= item.category.name %></a></td>
-                            <td><a href="<%= item.manufacturer.url %>"><%= item.manufacturer.name %></a></td>
-                            <td><a href="<%= item.url %>"><%= item.name %></a></td>
-                            <td><%= item.price %></td>
-                            <td><%= item.stock %></td>
+                            <th>Category</th>
+                            <th>Manufacturer</th>
+                            <th>Item</th>
+                            <th>Price</th>
+                            <th>Stock</th>
                         </tr>
-                    <% }) %>
-                </table>
-            </div>
+
+                        <% list_items.forEach((item) => { %>
+                            <tr>
+                                <td><a href="<%= item.category.url %>"><%= item.category.name %></a></td>
+                                <td><a href="<%= item.manufacturer.url %>"><%= item.manufacturer.name %></a></td>
+                                <td><a href="<%= item.url %>"><%= item.name %></a></td>
+                                <td><%= item.price %></td>
+                                <td><%= item.stock %></td>
+                            </tr>
+                        <% }) %>
+                    </table>
+                </div>
+            <% } else { %>
+                <p>There are no items from <%= manufacturer %>.</p>
+                <p><a href="<%= manufacturer %>/update">Update manufacturer name</a></p>
+                <form class="delete-form" method="POST" action="">
+                    <button class="delete" name="delete">Delete Manufacturer</button>
+                </form>
+                <% } %>
         </div>
     </div>
     <footer>Copyright © 2023 Phillip Ott</footer>
