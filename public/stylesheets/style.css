@@ -127,7 +127,10 @@ footer {
   align-items: center;
   justify-content: center;
   width: 100%;
+}
 
+.view-title {
+  text-transform: capitalize;
 }
 
 .item-table {
