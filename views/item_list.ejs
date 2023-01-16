@@ -4,39 +4,45 @@
     <title>Tuner's Instruments</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <body>
-    <h1>Tuner's Instruments</h1>
+  <body>    
+    <header><a href="/inventory"><img src="/images/logo.svg" id="logo"/></a></header>
     <div class="main">
         <div class="sidebar">
             <ul>
                 <li><a href="/inventory/items">View all items</a></li>
                 <li><a href="/inventory/categories">View all categories</a></li>
                 <li><a href="/inventory/manufacturers">View all manufacturers</a></li>
-            </ul>
+                <br>
+                <br>
+                <li><a href="/inventory/items/create">Add item</a></li>
+                <li><a href="/inventory/manufacturer/create">Add manufacturer</a></li>
+              </ul>
         </div>
-        <div class="stock">
-            <p>Viewing all items</p>
-            <table>
-                <tr>
-                    <th>Category</th>
-                    <th>Manufacturer</th>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                </tr>
-
-                <% list_items.forEach((item) => { %>
+        <div class="main-content">
+            <div class="stock">
+                <h2>Viewing All Items</h2>
+                <table class="item-table">
                     <tr>
-                        <td><a href="<%= item.category.url %>"><%= item.category.name %></a></td>
-                        <td><a href="<%= item.manufacturer.url %>"><%= item.manufacturer.name %></a></td>
-                        <td><a href="<%= item.url %>"><%= item.name %></a></td>
-                        <td><%= item.price %></td>
-                        <td><%= item.stock %></td>
+                        <th>Category</th>
+                        <th>Manufacturer</th>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Stock</th>
                     </tr>
-                <% }) %>
 
-            </table>
+                    <% list_items.forEach((item) => { %>
+                        <tr>
+                            <td><a href="<%= item.category.url %>"><%= item.category.name %></a></td>
+                            <td><a href="<%= item.manufacturer.url %>"><%= item.manufacturer.name %></a></td>
+                            <td><a href="<%= item.url %>"><%= item.name %></a></td>
+                            <td><%= item.price %></td>
+                            <td><%= item.stock %></td>
+                        </tr>
+                    <% }) %>
+                </table>
+            </div>
         </div>
-    </div> 
+    </div>
+    <footer>Copyright © 2023 Phillip Ott</footer>
   </body>
 </html>
