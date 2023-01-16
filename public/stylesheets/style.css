@@ -149,6 +149,24 @@ footer {
   background: var(--yellow);
 }
 
+.link-list {
+  font-size: 1.2rem;
+}
+
+.link-list li {
+  list-style-type: none;
+}
+
+.link-list li a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+}
+
+.link-list li a:hover {
+  text-decoration: underline;
+}
+
 .item-table tr:last-child, .item-table td:last-child {
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
