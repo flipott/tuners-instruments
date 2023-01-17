@@ -41,25 +41,25 @@ exports.index = (req, res) => {
     async.parallel(
       {
          guitar_count(callback) {
-          Item.find({category: '63bde0a21d6c87cc4329975f'}, callback);
+          Item.find({category: '63c5fb7afd9d1b401351ed3e'}, callback);
         },
         bass_count(callback) {
-          Item.find({category: '63bde0a31d6c87cc43299762'}, callback);
+          Item.find({category: '63c5fb7bfd9d1b401351ed41'}, callback);
         },
         percussion_count(callback) {
-          Item.find({category: '63bde0a31d6c87cc43299764'}, callback);
+          Item.find({category: '63c5fb7bfd9d1b401351ed43'}, callback);
         },
         keys_count(callback) {
-          Item.find({category: '63bde0a31d6c87cc43299766'}, callback);
+          Item.find({category: '63c5fb7bfd9d1b401351ed45'}, callback);
         },
         ampsfx_count(callback) {
-          Item.find({category: '63bde0a31d6c87cc43299768'}, callback);
+          Item.find({category: '63c5fb7bfd9d1b401351ed47'}, callback);
         },
         recording_count(callback) {
-          Item.find({category: '63bde0a31d6c87cc4329976a'}, callback);
+          Item.find({category: '63c5fb7bfd9d1b401351ed49'}, callback);
         },
         accessories_count(callback) {
-          Item.find({category: '63bde0a31d6c87cc4329976c'}, callback);
+          Item.find({category: '63c5fb7bfd9d1b401351ed4b'}, callback);
         },
       },
       (err, results) => {
