@@ -9,7 +9,7 @@
 }
 
 body {
-  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -34,6 +34,7 @@ header {
 }
 
 footer {
+  margin-top: auto;
   font-weight: 300;
   color: white;
   background: #404040;
